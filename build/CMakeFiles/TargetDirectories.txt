@@ -1,0 +1,3 @@
+/Users/davendra/Downloads/tacos/build/CMakeFiles/TACOS.dir
+/Users/davendra/Downloads/tacos/build/CMakeFiles/edit_cache.dir
+/Users/davendra/Downloads/tacos/build/CMakeFiles/rebuild_cache.dir
