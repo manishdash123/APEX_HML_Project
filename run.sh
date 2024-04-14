@@ -12,7 +12,7 @@ if [ ! -d "/build/bin" ]; then
 fi
 
 # Go into the build/bin directory
-cd /build/bin
+cd ./build/bin
 
 # Run the TACOS executable
 ./TACOS
