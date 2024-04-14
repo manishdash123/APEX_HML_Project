@@ -25,3 +25,6 @@ There are two code sections you might take a look into (as I mentioned, you can 
 •	runner/main.cpp: here you can set up 2D Mesh (size, link latency/bandwidth) and collective (All-Gather size and #chunks/collective)
 
 •	synthesizer/TacosGreedy.cpp: here I'm printing the "[time] (chunk) src -> dest" information. I envision you may fix this, to dump data into files (e.g., yaml/json/txt/csv) then start parsing them to create the xml file.
+
+
+Output run.sh to TACOS_output.txt from cmd terminal
