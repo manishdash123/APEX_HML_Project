@@ -6,7 +6,7 @@ if [ ! -d "/build/bin" ]; then
     echo "Building TACOS..."
 
     # Run build.sh to presumably build the project and create /build/bin
-    ./build.sh
+    ./build_bash.sh
 
     echo "TACOS build complete."
 fi
