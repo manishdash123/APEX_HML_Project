@@ -13,13 +13,24 @@ using namespace Tacos;
 
 int main(int argc, char *argv[]) {
     // FIXME: Experimental Configuration =========================================================
-    const auto width = 3;  // 2D Mesh width
-    const auto height = width;  // 2D Mesh height
-    const auto linkLatency = 500;  // ns
-    const auto linkBandwidth = 50;  // GB/s
-    const auto allGatherSize = 1024;  // MB
-    const auto chunksCountPerAllGather = 2;  // how many chunks per each All-Reduce collective
+    int _width;  // 2D Mesh width
+    //int height = width;  // 2D Mesh height
+    int _linkLatency = 500;  // ns
+    int _linkBandwidth = 50;  // GB/s
+    int _allGatherSize = 1024;  // MB
+    int _chunksCountPerAllGather = 2;  // how many chunks per each All-Reduce collective
+
+    std::cout<<"Enter <_width> <_linkLatency> <_linkBandwidth> <_allGatherSize> <_chunksCountPerAllGather> :";
+
+    std::cin>>_width>>_linkLatency>>_linkBandwidth>>_allGatherSize>>_chunksCountPerAllGather;
     // FIXME: ====================================================================================
+
+    const auto width = _width;  // 2D Mesh width
+    const auto height = _width;  // 2D Mesh height
+    const auto linkLatency = _linkLatency;  // ns
+    const auto linkBandwidth = _linkBandwidth;  // GB/s
+    const auto allGatherSize = _allGatherSize;  // MB
+    const auto chunksCountPerAllGather = _chunksCountPerAllGather;  // how many chunks per each All-Reduce 
 
     // set print precision
     fixed(std::cout);
