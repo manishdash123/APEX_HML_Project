@@ -15,5 +15,6 @@ fi
 cd ./build/bin
 
 # Run the TACOS executable
-./TACOS
+./TACOS 3 500 50 1024 2 > ./../../TACOS_output.txt
 
+echo "TACOS saved to TACOS_output"
