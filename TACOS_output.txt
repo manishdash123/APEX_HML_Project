@@ -1,0 +1,96 @@
+[2D Mesh Information]
+	#NPUs: 9
+	LinkLatency: 500 ns (0.50 us)
+	LinkBandwidth: 50 GB/s (19.53 us/MB)
+
+[All-Reduce Information]
+	#Chunks/NPU: 1
+	Chunk Size: 113.78 MB
+	All-Reduce Size: 1024 MB
+
+[Synthesizing Collective Algorithm]
+TACOS SOLVE
+Prepare Backtracking
+Prepare Backtracking
+[At time 0.00] Send Chunk 0 from 0 -> 1
+[At time 0.00] Send Chunk 0 from 0 -> 3
+[At time 0.00] Send Chunk 1 from 1 -> 0
+[At time 0.00] Send Chunk 1 from 1 -> 2
+[At time 0.00] Send Chunk 1 from 1 -> 4
+[At time 0.00] Send Chunk 2 from 2 -> 1
+[At time 0.00] Send Chunk 2 from 2 -> 5
+[At time 0.00] Send Chunk 3 from 3 -> 0
+[At time 0.00] Send Chunk 3 from 3 -> 4
+[At time 0.00] Send Chunk 3 from 3 -> 6
+[At time 0.00] Send Chunk 4 from 4 -> 1
+[At time 0.00] Send Chunk 4 from 4 -> 3
+[At time 0.00] Send Chunk 4 from 4 -> 5
+[At time 0.00] Send Chunk 4 from 4 -> 7
+[At time 0.00] Send Chunk 5 from 5 -> 2
+[At time 0.00] Send Chunk 5 from 5 -> 4
+[At time 0.00] Send Chunk 5 from 5 -> 8
+[At time 0.00] Send Chunk 6 from 6 -> 3
+[At time 0.00] Send Chunk 6 from 6 -> 7
+[At time 0.00] Send Chunk 7 from 7 -> 4
+[At time 0.00] Send Chunk 7 from 7 -> 6
+[At time 0.00] Send Chunk 7 from 7 -> 8
+[At time 0.00] Send Chunk 8 from 8 -> 5
+[At time 0.00] Send Chunk 8 from 8 -> 7
+Prepare Backtracking
+[At time 2222.72] Send Chunk 3 from 0 -> 1
+[At time 2222.72] Send Chunk 1 from 0 -> 3
+[At time 2222.72] Send Chunk 2 from 1 -> 0
+[At time 2222.72] Send Chunk 4 from 1 -> 2
+[At time 2222.72] Send Chunk 2 from 1 -> 4
+[At time 2222.72] Send Chunk 5 from 2 -> 1
+[At time 2222.72] Send Chunk 1 from 2 -> 5
+[At time 2222.72] Send Chunk 4 from 3 -> 0
+[At time 2222.72] Send Chunk 6 from 3 -> 4
+[At time 2222.72] Send Chunk 0 from 3 -> 6
+[At time 2222.72] Send Chunk 7 from 4 -> 1
+[At time 2222.72] Send Chunk 7 from 4 -> 3
+[At time 2222.72] Send Chunk 7 from 4 -> 5
+[At time 2222.72] Send Chunk 1 from 4 -> 7
+[At time 2222.72] Send Chunk 8 from 5 -> 2
+[At time 2222.72] Send Chunk 8 from 5 -> 4
+[At time 2222.72] Send Chunk 2 from 5 -> 8
+[At time 2222.72] Send Chunk 3 from 6 -> 7
+[At time 2222.72] Send Chunk 4 from 7 -> 6
+[At time 2222.72] Send Chunk 6 from 7 -> 8
+[At time 2222.72] Send Chunk 5 from 8 -> 7
+Prepare Backtracking
+[At time 4445.44] Send Chunk 2 from 0 -> 3
+[At time 4445.44] Send Chunk 7 from 1 -> 0
+[At time 4445.44] Send Chunk 7 from 1 -> 2
+[At time 4445.44] Send Chunk 0 from 1 -> 4
+[At time 4445.44] Send Chunk 8 from 2 -> 1
+[At time 4445.44] Send Chunk 6 from 3 -> 0
+[At time 4445.44] Send Chunk 1 from 3 -> 6
+[At time 4445.44] Send Chunk 6 from 4 -> 1
+[At time 4445.44] Send Chunk 8 from 4 -> 3
+[At time 4445.44] Send Chunk 3 from 4 -> 5
+[At time 4445.44] Send Chunk 2 from 4 -> 7
+[At time 4445.44] Send Chunk 1 from 5 -> 8
+[At time 4445.44] Send Chunk 0 from 6 -> 7
+[At time 4445.44] Send Chunk 8 from 7 -> 6
+[At time 4445.44] Send Chunk 3 from 7 -> 8
+[At time 4445.44] Send Chunk 6 from 8 -> 5
+Prepare Backtracking
+[At time 6668.17] Send Chunk 5 from 1 -> 0
+[At time 6668.17] Send Chunk 3 from 1 -> 2
+[At time 6668.17] Send Chunk 8 from 3 -> 0
+[At time 6668.17] Send Chunk 2 from 3 -> 6
+[At time 6668.17] Send Chunk 5 from 4 -> 3
+[At time 6668.17] Send Chunk 0 from 4 -> 5
+[At time 6668.17] Send Chunk 6 from 5 -> 2
+[At time 6668.17] Send Chunk 4 from 5 -> 8
+[At time 6668.17] Send Chunk 5 from 7 -> 6
+[At time 6668.17] Send Chunk 0 from 7 -> 8
+Prepare Backtracking
+[At time 8890.89] Send Chunk 0 from 1 -> 2
+[Synthesis Finished]
+
+[Synthesis Result]
+	All-Gather Time: 11113.61 us
+	All-Reduce Time: 22227.22 us
+	Synthesis Time: 0.23 ms
