@@ -241,9 +241,9 @@
       <step s="1" type="s" srcbuf="o" srcoff="8" dstbuf="o" dstoff="8" cnt="2" deps="0" depsid="5" hasdeps="1"/>
       <step s="2" type="s" srcbuf="o" srcoff="4" dstbuf="o" dstoff="4" cnt="2" deps="0" depsid="4" hasdeps="1"/>
       <step s="3" type="s" srcbuf="o" srcoff="17" dstbuf="o" dstoff="17" cnt="2" deps="2" depsid="4" hasdeps="1"/>
-      <step s="4" type="s" srcbuf="o" srcoff="6" dstbuf="o" dstoff="6" cnt="2" deps="3" depsid="5" hasdeps="1"/>
+      <step s="4" type="s" srcbuf="o" srcoff="6" dstbuf="o" dstoff="6" cnt="2" deps="2" depsid="5" hasdeps="1"/>
       <step s="5" type="s" srcbuf="o" srcoff="5" dstbuf="o" dstoff="5" cnt="2" deps="-1" depsid="-1" hasdeps="0"/>
-      <step s="6" type="s" srcbuf="o" srcoff="15" dstbuf="o" dstoff="15" cnt="2" deps="4" depsid="5" hasdeps="1"/>
+      <step s="6" type="s" srcbuf="o" srcoff="15" dstbuf="o" dstoff="15" cnt="2" deps="3" depsid="5" hasdeps="1"/>
       <step s="7" type="s" srcbuf="o" srcoff="0" dstbuf="o" dstoff="0" cnt="2" deps="6" depsid="4" hasdeps="1"/>
     </tb>
     <tb id="1" send="4" recv="-1" chan="0">
