@@ -4,6 +4,15 @@ import concurrent.futures
 def run_tacos(gpu_mesh, link_bw, bw):
     # ...
     # Save results to output folder as txt and csv
+    '''
+     K = 25, link = 500, BW = 50, CS=1000
+     output_folder = K_25_LINK_500_BW_50_CS_1000
+    '''
+
+    # 1. run tacos script ----> produces TACOS_output.txt and output.csv 
+    # 2. run analysis script ------> xml
+    # 3. run the chakra conversion script -----> ET's
+    # 4. run astra-sim -----> pipe to text OR use a python subprocess and make a csv
     pass
 
 # k = [25.....400]
