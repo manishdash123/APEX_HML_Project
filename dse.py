@@ -21,7 +21,7 @@ def clean_directory(directory):
 # Define the function that will call in parallel
 def run_analysis(K, link_lat, bw, chunk_size, chunk_per_collective):
 
-    TACOS_SRC = os.path.join('/Users/davendra/Documents/georgiatech/spring2024/cs8803/APEX_HML_Project/build/bin/TACOS')
+    TACOS_SRC = os.path.join('/home/davendra/project/APEX_HML_Project/build/bin/TACOS')
 
     ROOT_DIR = os.path.join('./apex_outputs')
     OUTPUT_DIR = f'gpu_{K}_link_{link_lat}_bw_{bw}_chunk_{chunk_size}_chunk_coll_{chunk_per_collective}'

@@ -217,22 +217,22 @@ def main():
         graphs[row['Timestep']].add_edge(row['source'], row['destination'], label=row['chunkID'])
 
     # DEBUG: VISUALIZATION
-    GRAPH_DATA_DIR = 'data/'
-
-    # Ensure the output directory is clean
-    if os.path.exists(GRAPH_DATA_DIR):
-        # print(f'Directory: {GRAPH_DATA_DIR} alreadY exists!')
-        # print(f'Cleaning {GRAPH_DATA_DIR}...\n')
-        clean_directory(GRAPH_DATA_DIR)
-        # print(f'Done cleaning {GRAPH_DATA_DIR}\n')
-    else:
-        try: 
-            os.makedirs(GRAPH_DATA_DIR) 
-        # print("Directory '%s' created successfully" % OUTPUT_PATH) 
-        except OSError as error: 
-            print("Directory '%s' can not be created" % GRAPH_DATA_DIR)
-
     if debug:
+        GRAPH_DATA_DIR = 'data/'
+
+        # Ensure the output directory is clean
+        if os.path.exists(GRAPH_DATA_DIR):
+            # print(f'Directory: {GRAPH_DATA_DIR} alreadY exists!')
+            # print(f'Cleaning {GRAPH_DATA_DIR}...\n')
+            clean_directory(GRAPH_DATA_DIR)
+            # print(f'Done cleaning {GRAPH_DATA_DIR}\n')
+        else:
+            try: 
+                os.makedirs(GRAPH_DATA_DIR) 
+            # print("Directory '%s' created successfully" % OUTPUT_PATH) 
+            except OSError as error: 
+                print("Directory '%s' can not be created" % GRAPH_DATA_DIR)
+
         for t, graph in graphs.items():
             print(f'Graph No: {t}')
             name = f'graph_{t}'

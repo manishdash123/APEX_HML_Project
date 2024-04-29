@@ -30,11 +30,16 @@ chmod +x "./$TACOS_FILENAME"
 
 # <---------------------------------------------------------- CALL 2: XML ---------------------------------------------------------->
 
-python3 ../../analyze_network.py --K $DIM --link_lat $LINK --bw $BW --chunk_size $CHUNK --chunk_per_collective $CHUNK_PER_COLL
+python3 ../../analyze_network.py --K $DIM --link_lat $LINK --bw $BW --chunk_size $CHUNK --chunk_per_collective $CHUNK_PER_COLL --debug False
 
 
 # <---------------------------------------------------------- CALL 3: CHAKRA -------------------------------------------------------->
 
+# # make a directory for chakra outputs
+# mkdir chakra_et
+
+# # python3 -m et_converter.et_converter --input_type msccl --input_filename XX --output_filename XX
+# python3 /home/davendra/project/chakra/et_converter/et_converter.py --input_type msccl --input_filename XX --output_filename XX
 
 # <---------------------------------------------------------- CALL 4: ASTRASIM ------------------------------------------------------>
 
