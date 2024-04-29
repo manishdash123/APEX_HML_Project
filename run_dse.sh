@@ -61,27 +61,32 @@ BINARY=/home/davendra/project/astra-sim/build/astra_analytical/build/bin/AstraSi
 SCRIPT_DIR=../../
 
 WORKLOAD=$OUTPUT_ET_FILENAME
+# echo $WORKLOAD
 
 #WORKLOAD=./inputs/workload/test/one_comm_coll_node_allgather
 
 SYSTEM="${SCRIPT_DIR:?}"inputs/system/Ring.json
+# echo $SYSTEM
 
 #to do : update the yml file before running
 # NETWORK="${SCRIPT_DIR:?}"inputs/network/Mesh2D.yml
 
 NETWORK=$YAML_FILE
+# echo $NETWORK
 
 # NETWORK=/home/davendra/project/APEX_HML_Project/inputs/network/Mesh2D.yml
 
 MEMORY="${SCRIPT_DIR:?}"inputs/remote_memory/no_memory_expansion.json
 
+# echo $MEMORY
+
 "${BINARY}" \
   --workload-configuration="${WORKLOAD}" \
   --system-configuration="${SYSTEM}" \
   --network-configuration="${NETWORK}"\
-  --remote-memory-configuration="${MEMORY}" > astrasim.txt
+  --remote-memory-configuration="${MEMORY}" > "${OUTPUT_ET_FILENAME}_astrasim.txt"
 
 
 # <----------------------------------------------------------  delete ET files ------------------------------------------------------>
-rm -rf *et
-rm -rf ./$TACOS_FILENAME
+# rm -rf *et
+# rm -rf ./$TACOS_FILENAME

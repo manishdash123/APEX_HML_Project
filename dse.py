@@ -59,6 +59,7 @@ def run_analysis(K, link_lat, bw, chunk_size, chunk_per_collective):
 
 # Parameters for the product
 
+# k = 2, 4, 6, 8, 10
 K = [10] # to be changed for different team members
 link_latency = [500]
 bandwidths = list(range(0, 1100, 100))  # GB/s
@@ -92,6 +93,6 @@ if __name__ == '__main__':
     main()
     print('DONE SIMULATION!')
 
-# run_analysis(3, 500, 50, 1024, 1)
+# run_analysis(3, 500, 50, 2048, 1)
 
 # print(f'Length of combinations: {len(param_combinations)}')
