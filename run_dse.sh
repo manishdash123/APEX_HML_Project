@@ -32,7 +32,7 @@ chmod +x "./$TACOS_FILENAME"
 
 # <---------------------------------------------------------- CALL 2: XML ---------------------------------------------------------->
 
-python3 ../../analyze_network.py --K $DIM --link_lat $LINK --bw $BW --chunk_size $CHUNK --chunk_per_collective $CHUNK_PER_COLL --debug 1
+python3 ../../analyze_network.py --K $DIM --link_lat $LINK --bw $BW --chunk_size $CHUNK --chunk_per_collective $CHUNK_PER_COLL --debug 0
 
 
 # <---------------------------------------------------------- CALL 3: CHAKRA -------------------------------------------------------->
@@ -51,18 +51,17 @@ python3 -m et_converter.et_converter \
   --output_filename "$OUTPUT_ET_FILENAME" \
   --num_dims 2
 
-#   mv *.et chakra_et
-
 # <---------------------------------------------------------- CALL 4: ASTRASIM ------------------------------------------------------>
 
 
 BINARY=/home/davendra/project/astra-sim/build/astra_analytical/build/bin/AstraSim_Analytical_Congestion_Aware
 
-SCRIPT_DIR=../../
+SCRIPT_DIR=./
 
-WORKLOAD=$OUTPUT_ET_FILENAME
+# WORKLOAD=$OUTPUT_ET_FILENAME
 
-# WORKLOAD="${SCRIPT_DIR:?}"/inputs/workload/test/one_comm_coll_node_allgather
+WORKLOAD=./inputs/workload/test/one_comm_coll_node_allgather
+
 SYSTEM="${SCRIPT_DIR:?}"inputs/system/Ring.json
 NETWORK="${SCRIPT_DIR:?}"inputs/network/Mesh2D.yml
 MEMORY="${SCRIPT_DIR:?}"inputs/remote_memory/no_memory_expansion.json
@@ -71,7 +70,4 @@ MEMORY="${SCRIPT_DIR:?}"inputs/remote_memory/no_memory_expansion.json
   --workload-configuration="${WORKLOAD}" \
   --system-configuration="${SYSTEM}" \
   --network-configuration="${NETWORK}"\
-  --remote-memory-configuration="${MEMORY}" > astrasim.txt
-
-
-
+  --remote-memory-configuration="${MEMORY}" > astrasim_reference.txt

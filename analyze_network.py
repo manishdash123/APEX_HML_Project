@@ -195,7 +195,9 @@ def main():
 
     num_npus = int(mesh_dim * mesh_dim)
     npu_ids = range(num_npus)
-    print(f'NPU IDs: {npu_ids}')
+
+    if debug:
+        print(f'NPU IDs: {npu_ids}')
 
     # input and output CSV file paths
     tacos_input_file = 'output.csv'

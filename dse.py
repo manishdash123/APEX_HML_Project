@@ -1,13 +1,12 @@
 import os
-import shutil
 import subprocess
 import numpy as np
-import concurrent.futures
 from itertools import product
+import concurrent.futures
 
-
+# Function to clean directories
 def clean_directory(directory):
-    # This function removes all files and folders in the specified directory
+    import shutil
     for filename in os.listdir(directory):
         file_path = os.path.join(directory, filename)
         try:
@@ -18,68 +17,48 @@ def clean_directory(directory):
         except Exception as e:
             print(f'Failed to delete {file_path}. Reason: {e}')
 
-# Define the function that will call in parallel
+# Function to perform analysis
 def run_analysis(K, link_lat, bw, chunk_size, chunk_per_collective):
-
-    TACOS_SRC = os.path.join('/home/davendra/project/APEX_HML_Project/build/bin/TACOS')
-
-    ROOT_DIR = os.path.join('./apex_outputs')
+    TACOS_SRC = '/home/davendra/project/APEX_HML_Project/build/bin/TACOS'
+    ROOT_DIR = './apex_outputs'
     OUTPUT_DIR = f'gpu_{K}_link_{link_lat}_bw_{bw}_chunk_{chunk_size}_chunk_coll_{chunk_per_collective}'
-
     OUTPUT_PATH = os.path.join(ROOT_DIR, OUTPUT_DIR)
 
-    # Ensure the output directory is clean
+    # Ensure the output directory is clean and exists
     if os.path.exists(OUTPUT_PATH):
-        print(f'Directory: {OUTPUT_PATH} alreadY exists!')
-        print(f'Cleaning {OUTPUT_PATH}...\n')
         clean_directory(OUTPUT_PATH)
-        print(f'Done cleaning {OUTPUT_PATH}\n')
     else:
-        try: 
-            os.makedirs(OUTPUT_PATH) 
-        # print("Directory '%s' created successfully" % OUTPUT_PATH) 
-        except OSError as error: 
-            print("Directory '%s' can not be created" % OUTPUT_PATH)
+        os.makedirs(OUTPUT_PATH, exist_ok=True)
 
     command = f"./run_dse.sh {TACOS_SRC} {OUTPUT_PATH} {K} {link_lat} {bw} {chunk_size} {chunk_per_collective}"
+    subprocess.run(command, shell=True, check=True)
 
-    # Run the command
-    subprocess.run(command, shell=True)
+# Parameters for the product
+K = [20]
+link_latency = list(range(100, 1000, 100))  # ns
+bandwidths = list(range(50, 600, 50))  # GB/s
+chunk_size = list(range(1, 4000, 500))  # MB
+chunks_per_collective = [1, 2, 4]
 
+param_combinations = list(product(K, link_latency, bandwidths, chunk_size, chunks_per_collective))
 
+# Running the tasks in parallel
+def main():
+    # Determine the number of cores to use
+    total_cores = os.cpu_count()
+    number_of_workers = max(10, total_cores - 1)  # Use all but one core
 
-run_analysis(3, 500, 50, 1024, 1)
+    # Using ProcessPoolExecutor with a specific number of workers
+    with concurrent.futures.ProcessPoolExecutor(max_workers=number_of_workers) as executor:
+        # Submit all tasks to the executor
+        futures = [executor.submit(run_analysis, *params) for params in param_combinations]
 
-    # 1. run tacos script ----> produce: output.csv & output.txt
-    # 2. run analysis script ------> xml
-    # 3. run the chakra conversion script -----> ET's
-    # 4. run astra-sim -----> pipe to text OR use a python subprocess and make a csv
-    # pass
+        # Wait for all tasks to complete
+        for future in concurrent.futures.as_completed(futures):
+            try:
+                future.result()  # Get the result of the task
+            except Exception as exc:
+                print(f'Generated an exception: {exc}')
 
-    # Call TACOS to generate network flow -------> output.csv & output.txt
-    # Call XML_Geneator to create XML format --------> input: output.csv, output.txt, intermediate: preprocess.csv, output: network.xml
-    # Call Chakra to use XML and generate Traces -------> input: network.xml, output: *.et
-    # Call Astrasim to use traces and give results as a txt file --------> input: *.et, output: astrasim.txt
-
-# Create a list of all possible combinations of the variables
-# gpu_mesh_sizes = [(i, i) for i in range(2, 101)]  # Creates tuples like (2, 2), (3, 3), etc.
-
-# # NV: 
-# link_latency = list(range(500, 10000, 500))  # 200, 300, ..., 1000
-# bandwidths = list(range(50, 1000, 50))  # 10, 20, ..., 80
-# chunk_size = list(range(0.001, 10000, 500))
-
-# # Generate all combinations of parameters
-# param_combinations = list(product(gpu_mesh_sizes, link_latency, bandwidths))
-
-# # Function to unpack arguments
-# def run_with_params(params):
-#     return run_analysis(*params)
-
-# # Run the tasks in parallel using ProcessPoolExecutor
-# with concurrent.futures.ProcessPoolExecutor() as executor:
-#     # Map the run_with_params to the list of parameter combinations
-#     results = list(executor.map(run_with_params, param_combinations))
-
-
-# K = 16, 64, 144, 256, 400 <--------> Zain, Gaurav, Manish, Karthik, Davendra
+if __name__ == '__main__':
+    main()
