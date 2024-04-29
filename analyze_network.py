@@ -10,7 +10,7 @@ import xml.etree.ElementTree as ET
 import xml.dom.minidom
 import re
 import os
-from pprint import pprint
+import pprint
 import matplotlib.image as mpimg
 from networkx.drawing.nx_agraph import to_agraph
 
@@ -118,7 +118,7 @@ def generate_and_save_xml_pretty(node_traffic, filename, chunks_per_collective, 
                                     recv=str(source if edge_info['records'][0]['type'] == 'r' else '-1'),
                                     chan="0")
 
-            step_counter = 0
+            # step_counter = 0
 
             # create <step> tags for each time step
             for record in edge_info['records']:
@@ -126,12 +126,23 @@ def generate_and_save_xml_pretty(node_traffic, filename, chunks_per_collective, 
                 if record['type'] == '-1':
                     continue
                 
-                record['timestep'] = step_counter
+                # record['timestep'] = step_counter
 
                 # Check for matching chunkID between 's' and 'r' records
+
+                # Check other threadblocks
                 for (source_other, destination_other), edge_info_other in edges.items():
+                    
+                    # for the other threadblocks, check the step
                     for record_other in edge_info_other['records']:
                         
+                        # # ------------------------------------DEBUG------------------------------------
+                        # if debug:
+                        #     if (record['type'] == record_other['type']) and (record['chunkID'] == record_other['chunkID']) \
+                        #         and (record['timestep'] != record_other['timestep']):
+
+                        #         print(f'record_type: {record['type']}, record_chunkID: {record['chunkID']}, record_timestep: {record['timestep']}, record_other_timestep: {record_other['timestep']}, gpuID": {node}')
+                        #  # ------------------------------------DEBUG------------------------------------
 
                         if(record['type'] == 's' and record_other['type'] == 'r'):
                             if(record['chunkID'] == record_other['chunkID']):
@@ -141,12 +152,12 @@ def generate_and_save_xml_pretty(node_traffic, filename, chunks_per_collective, 
                                 record['deps'] = record_other['timestep']
                 
                 # if record['type'] != '-1':
-                ET.SubElement(tb_elem, "step", s=str(step_counter), type=record['type'], srcbuf="o",
+                ET.SubElement(tb_elem, "step", s=str(record['timestep']), type=record['type'], srcbuf="o",
                               srcoff=str(record['chunkID']), dstbuf="o", dstoff=str(record['chunkID']),
                               cnt=str(chunks_per_collective), deps=str(record['deps']), depid=str(record['depid']),
                               hasdeps=str(record['hasdeps']))
 
-                step_counter += 1
+                # step_counter += 1
 
 
                 
@@ -184,6 +195,7 @@ def main():
 
     num_npus = int(mesh_dim * mesh_dim)
     npu_ids = range(num_npus)
+    print(f'NPU IDs: {npu_ids}')
 
     # input and output CSV file paths
     tacos_input_file = 'output.csv'
@@ -274,6 +286,30 @@ def main():
             node_traffic[destination][(source, destination)]['records'][t_index]['chunkID'] = data['label']
             node_traffic[destination][(source, destination)]['records'][t_index]['type'] = 'r'
 
+    if debug:
+        with open('node_traffic_before.log', 'w') as f:
+            # Use pprint and direct the output to the file
+            pprint.pprint(node_traffic, stream=f)
+
+
+    # Reassign Timesteps ------> Ignore negatives
+    for gpu, threadblocks in sorted(node_traffic.items()):
+        # Create <tb> tags for each connected edge
+        for (source, destination), timesteps in threadblocks.items():
+
+            step_counter = 0
+            
+            # iterate over the list of timesteps
+
+            for step in timesteps['records']:
+                
+                if step['type'] == '-1':
+                    step['timestep'] = "-1"
+                    continue
+                
+                step['timestep'] = step_counter
+                step_counter += 1
+
 
     # <---------------------------------------------------------- STEP 4: GENERATE XML FILE --------------------------------------------------------->
 
@@ -296,6 +332,10 @@ def main():
     # Write the modified content back to the output file
     with open(filename, "w") as file:
         file.write(modified_xml_content)
+
+    with open('node_traffic_after.log', 'w') as f:
+        # Use pprint and direct the output to the file
+        pprint.pprint(node_traffic, stream=f)
 
 
 if __name__ == "__main__":
