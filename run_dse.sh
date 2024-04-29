@@ -42,7 +42,7 @@ INPUT_XML_FILENAME="gpu_${DIM}_link_${LINK}_bw_${BW}_chunk_${CHUNK}_chunk_coll_$
 OUTPUT_ET_FILENAME="gpu_${DIM}_link_${LINK}_bw_${BW}_chunk_${CHUNK}_chunk_coll_${CHUNK_PER_COLL}"
 
 # make a directory for chakra outputs if it doesn't already exist
-mkdir -p chakra_et
+# mkdir -p chakra_et
 
 # Call the et_converter.py with the dynamically constructed filenames
 python3 -m et_converter.et_converter \
@@ -51,7 +51,7 @@ python3 -m et_converter.et_converter \
   --output_filename "$OUTPUT_ET_FILENAME" \
   --num_dims 2
 
-  mv *.et chakra_et
+#   mv *.et chakra_et
 
 # <---------------------------------------------------------- CALL 4: ASTRASIM ------------------------------------------------------>
 
