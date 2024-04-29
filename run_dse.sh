@@ -14,8 +14,10 @@ CHUNK_PER_COLL=$7
 # Go into DEST DIR
 cd $DEST_DIR
 
+export PYTHONPATH="/home/davendra/project/chakra/:$PYTHONPATH"
+
 # <---------------------------------------------------------- CALL 1: TACOS --------------------------------------------------------->
-echo "<------------------------------------------------------Calling TACOS ---------------------------------------------------------->"
+# echo "<------------------------------------------------------Calling TACOS ---------------------------------------------------------->"
 
 TACOS_FILENAME=$(basename "$SRC_TACOS")
 
@@ -35,31 +37,41 @@ python3 ../../analyze_network.py --K $DIM --link_lat $LINK --bw $BW --chunk_size
 
 # <---------------------------------------------------------- CALL 3: CHAKRA -------------------------------------------------------->
 
-# # make a directory for chakra outputs
-# mkdir chakra_et
+# Construct the input filename
+INPUT_XML_FILENAME="gpu_${DIM}_link_${LINK}_bw_${BW}_chunk_${CHUNK}_chunk_coll_${CHUNK_PER_COLL}.xml"
+OUTPUT_ET_FILENAME="gpu_${DIM}_link_${LINK}_bw_${BW}_chunk_${CHUNK}_chunk_coll_${CHUNK_PER_COLL}"
 
-# # python3 -m et_converter.et_converter --input_type msccl --input_filename XX --output_filename XX
-# python3 /home/davendra/project/chakra/et_converter/et_converter.py --input_type msccl --input_filename XX --output_filename XX
+# make a directory for chakra outputs if it doesn't already exist
+mkdir -p chakra_et
+
+# Call the et_converter.py with the dynamically constructed filenames
+python3 -m et_converter.et_converter \
+  --input_type msccl \
+  --input_filename "$INPUT_XML_FILENAME" \
+  --output_filename "$OUTPUT_ET_FILENAME" \
+  --num_dims 2
+
+  mv *.et chakra_et
 
 # <---------------------------------------------------------- CALL 4: ASTRASIM ------------------------------------------------------>
 
 
-# BINARY=/home/davendra/project/astra-sim/build/astra_analytical/build/bin/AstraSim_Analytical_Congestion_Aware
+BINARY=/home/davendra/project/astra-sim/build/astra_analytical/build/bin/AstraSim_Analytical_Congestion_Aware
 
-# SCRIPT_DIR=./
+SCRIPT_DIR=../../
 
-# WORKLOAD="${SCRIPT_DIR:?}"/inputs/workload/set_1/set_1
+WORKLOAD=./chakra_et/"$OUTPUT_ET_FILENAME"
 
-# # WORKLOAD="${SCRIPT_DIR:?}"/inputs/workload/test/one_comm_coll_node_allgather
-# SYSTEM="${SCRIPT_DIR:?}"/inputs/system/Ring.json
-# NETWORK="${SCRIPT_DIR:?}"/inputs/network/Mesh2D.yml
-# MEMORY="${SCRIPT_DIR:?}"/inputs/remote_memory/no_memory_expansion.json
+# WORKLOAD="${SCRIPT_DIR:?}"/inputs/workload/test/one_comm_coll_node_allgather
+SYSTEM="${SCRIPT_DIR:?}"inputs/system/Ring.json
+NETWORK="${SCRIPT_DIR:?}"inputs/network/Mesh2D.yml
+MEMORY="${SCRIPT_DIR:?}"inputs/remote_memory/no_memory_expansion.json
 
-# "${BINARY}" \
-#   --workload-configuration="${WORKLOAD}" \
-#   --system-configuration="${SYSTEM}" \
-#   --network-configuration="${NETWORK}"\
-#   --remote-memory-configuration="${MEMORY}" > astrasim.txt
+"${BINARY}" \
+  --workload-configuration="${WORKLOAD}" \
+  --system-configuration="${SYSTEM}" \
+  --network-configuration="${NETWORK}"\
+  --remote-memory-configuration="${MEMORY}" > astrasim.txt
 
 
 
