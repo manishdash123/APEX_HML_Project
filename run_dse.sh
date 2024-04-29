@@ -78,3 +78,7 @@ MEMORY="${SCRIPT_DIR:?}"inputs/remote_memory/no_memory_expansion.json
   --system-configuration="${SYSTEM}" \
   --network-configuration="${NETWORK}"\
   --remote-memory-configuration="${MEMORY}" > astrasim.txt
+
+
+# <----------------------------------------------------------  delete ET files ------------------------------------------------------>
+rm -rf *et

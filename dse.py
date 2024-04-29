@@ -58,7 +58,7 @@ def run_analysis(K, link_lat, bw, chunk_size, chunk_per_collective):
     subprocess.run(command, shell=True, check=True)
 
 # Parameters for the product
-K = [12] # to be changed for different team members
+K = [20] # to be changed for different team members
 
 link_latency = list(range(100, 1000, 100))  # ns
 bandwidths = list(range(50, 600, 50))  # GB/s
@@ -71,7 +71,7 @@ param_combinations = list(product(K, link_latency, bandwidths, chunk_size, chunk
 def main():
     # Determine the number of cores to use
     total_cores = os.cpu_count()
-    number_of_workers = max(8, 12)  # Use all but one core
+    number_of_workers = max(8, 18)  # Use all but one core
 
     # Using ProcessPoolExecutor with a specific number of workers
     with concurrent.futures.ProcessPoolExecutor(max_workers=number_of_workers) as executor:
@@ -87,5 +87,8 @@ def main():
 
 if __name__ == '__main__':
     main()
+    print('DONE SIMULATION!')
 
 # run_analysis(8, 600, 100, 1024, 1)
+
+# print(f'Length of combinations: {len(param_combinations)}')
