@@ -180,6 +180,7 @@ def main():
     bw = args.bw
     chunk_size = args.chunk_size
     chunks_per_collective = args.chunk_per_collective
+    debug = args.debug
 
     num_npus = int(mesh_dim * mesh_dim)
     npu_ids = range(num_npus)
@@ -231,10 +232,11 @@ def main():
         except OSError as error: 
             print("Directory '%s' can not be created" % GRAPH_DATA_DIR)
 
-    for t, graph in graphs.items():
-        print(f'Graph No: {t}')
-        name = f'graph_{t}'
-        visualize_graph(graph, GRAPH_DATA_DIR, name=name, t=t)
+    if debug:
+        for t, graph in graphs.items():
+            print(f'Graph No: {t}')
+            name = f'graph_{t}'
+            visualize_graph(graph, GRAPH_DATA_DIR, name=name, t=t)
 
     # <---------------------------------------------------------- STEP 3: CREATE DATA STRUCTURE --------------------------------------------------------->
 
