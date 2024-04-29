@@ -147,15 +147,15 @@ def generate_and_save_xml_pretty(node_traffic, filename, chunks_per_collective, 
                         if(record['type'] == 's' and record_other['type'] == 'r'):
                             if(record['chunkID'] == record_other['chunkID']):
                                 
-                                record['hasdeps'] = 1
+                                record['hasdep'] = 1
                                 record['depid'] = edge_info_other["threadID"]
                                 record['deps'] = record_other['timestep']
                 
                 # if record['type'] != '-1':
                 ET.SubElement(tb_elem, "step", s=str(record['timestep']), type=record['type'], srcbuf="o",
                               srcoff=str(record['chunkID']), dstbuf="o", dstoff=str(record['chunkID']),
-                              cnt=str(chunks_per_collective), deps=str(record['deps']), depid=str(record['depid']),
-                              hasdeps=str(record['hasdeps']))
+                              cnt=str(chunks_per_collective), depid=str(record['depid']), deps=str(record['deps']),
+                              hasdep=str(record['hasdep']))
 
                 # step_counter += 1
 
@@ -267,7 +267,7 @@ def main():
         for target in first_graph.successors(node):
             node_traffic[node][(node, target)] = {
                 'threadID': edge_counter,
-                'records': [{'timestep': t, 'chunkID': -1, 'type': '-1', 'deps': -1, 'depid': -1, 'hasdeps': 0} for t in graphs.keys()]
+                'records': [{'timestep': t, 'chunkID': -1, 'type': '-1', 'depid': -1, 'deps': -1, 'hasdep': 0} for t in graphs.keys()]
             }
             edge_counter += 1
 
@@ -276,7 +276,7 @@ def main():
             if (source, node) not in node_traffic[node]:
                 node_traffic[node][(source, node)] = {
                     'threadID': edge_counter,
-                    'records': [{'timestep': t, 'chunkID': -1, 'type': '-1', 'deps': -1, 'depid': -1, 'hasdeps': 0} for t in graphs.keys()]
+                    'records': [{'timestep': t, 'chunkID': -1, 'type': '-1', 'depid': -1, 'deps': -1, 'hasdep': 0} for t in graphs.keys()]
                 }
                 edge_counter += 1
 
