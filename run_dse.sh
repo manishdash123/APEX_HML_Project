@@ -14,7 +14,8 @@ CHUNK_PER_COLL=$7
 # Go into DEST DIR
 cd $DEST_DIR
 
-export PYTHONPATH="/home/davendra/project/chakra/:$PYTHONPATH"
+#path to chakra folder
+export PYTHONPATH="/media/manishdash123/Studies/GaTech_studies/2nd_Sem_Spring_2024/Courses/CS_8803_HW_SW_Codesign_For_ML/research_project/Jinsun_Converter/chakra:$PYTHONPATH"
 
 # <---------------------------------------------------------- CALL 1: TACOS --------------------------------------------------------->
 # echo "<------------------------------------------------------Calling TACOS ---------------------------------------------------------->"
@@ -53,16 +54,18 @@ python3 -m et_converter.et_converter \
 
 # <---------------------------------------------------------- CALL 4: ASTRASIM ------------------------------------------------------>
 
+#path to ASTRA-SIM binary
+BINARY=/media/manishdash123/Studies/GaTech_studies/2nd_Sem_Spring_2024/Courses/CS_8803_HW_SW_Codesign_For_ML/research_project/astra-sim/astra-sim/build/astra_analytical/build/bin/AstraSim_Analytical_Congestion_Aware
 
-BINARY=/home/davendra/project/astra-sim/build/astra_analytical/build/bin/AstraSim_Analytical_Congestion_Aware
+SCRIPT_DIR=../../
 
-SCRIPT_DIR=./
+WORKLOAD=$OUTPUT_ET_FILENAME
 
-# WORKLOAD=$OUTPUT_ET_FILENAME
-
-WORKLOAD=./inputs/workload/test/one_comm_coll_node_allgather
+#WORKLOAD=./inputs/workload/test/one_comm_coll_node_allgather
 
 SYSTEM="${SCRIPT_DIR:?}"inputs/system/Ring.json
+
+#to do : update the yml file before running
 NETWORK="${SCRIPT_DIR:?}"inputs/network/Mesh2D.yml
 MEMORY="${SCRIPT_DIR:?}"inputs/remote_memory/no_memory_expansion.json
 
@@ -70,4 +73,4 @@ MEMORY="${SCRIPT_DIR:?}"inputs/remote_memory/no_memory_expansion.json
   --workload-configuration="${WORKLOAD}" \
   --system-configuration="${SYSTEM}" \
   --network-configuration="${NETWORK}"\
-  --remote-memory-configuration="${MEMORY}" > astrasim_reference.txt
+  --remote-memory-configuration="${MEMORY}" > astrasim.txt

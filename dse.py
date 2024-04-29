@@ -19,7 +19,9 @@ def clean_directory(directory):
 
 # Function to perform analysis
 def run_analysis(K, link_lat, bw, chunk_size, chunk_per_collective):
-    TACOS_SRC = '/home/davendra/project/APEX_HML_Project/build/bin/TACOS'
+    
+    # add path to TACOS binary
+    TACOS_SRC = '/media/manishdash123/Studies/GaTech_studies/2nd_Sem_Spring_2024/Courses/CS_8803_HW_SW_Codesign_For_ML/research_project/node_traffic_branch/APEX_HML_Project/build/bin/TACOS'
     ROOT_DIR = './apex_outputs'
     OUTPUT_DIR = f'gpu_{K}_link_{link_lat}_bw_{bw}_chunk_{chunk_size}_chunk_coll_{chunk_per_collective}'
     OUTPUT_PATH = os.path.join(ROOT_DIR, OUTPUT_DIR)
@@ -34,7 +36,8 @@ def run_analysis(K, link_lat, bw, chunk_size, chunk_per_collective):
     subprocess.run(command, shell=True, check=True)
 
 # Parameters for the product
-K = [20]
+K = [12] # to be changed for different team members
+
 link_latency = list(range(100, 1000, 100))  # ns
 bandwidths = list(range(50, 600, 50))  # GB/s
 chunk_size = list(range(1, 4000, 500))  # MB
@@ -46,7 +49,7 @@ param_combinations = list(product(K, link_latency, bandwidths, chunk_size, chunk
 def main():
     # Determine the number of cores to use
     total_cores = os.cpu_count()
-    number_of_workers = max(10, total_cores - 1)  # Use all but one core
+    number_of_workers = max(8, 12)  # Use all but one core
 
     # Using ProcessPoolExecutor with a specific number of workers
     with concurrent.futures.ProcessPoolExecutor(max_workers=number_of_workers) as executor:
