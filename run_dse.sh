@@ -30,7 +30,7 @@ chmod +x "./$TACOS_FILENAME"
 
 # <---------------------------------------------------------- CALL 2: XML ---------------------------------------------------------->
 
-python3 ../../analyze_network.py --K $DIM --link_lat $LINK --bw $BW --chunk_size $CHUNK --chunk_per_collective $CHUNK_PER_COLL --debug False
+python3 ../../analyze_network.py --K $DIM --link_lat $LINK --bw $BW --chunk_size $CHUNK --chunk_per_collective $CHUNK_PER_COLL --debug 0
 
 
 # <---------------------------------------------------------- CALL 3: CHAKRA -------------------------------------------------------->

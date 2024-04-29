@@ -166,7 +166,7 @@ def setup_parser():
     parser.add_argument('--bw', type=int, default=50, help='Bandwidth')
     parser.add_argument('--chunk_size', type=int, default=1024, help='Chunk size')
     parser.add_argument('--chunk_per_collective', default=1, type=int, help='Chunks per collective')
-    parser.add_argument('--debug', default=False, type=bool, help='DEBUG MODE')
+    parser.add_argument('--debug', default=False, type=int, help='DEBUG MODE')
     return parser
     
 
