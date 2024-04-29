@@ -57,35 +57,35 @@ def run_analysis(K, link_lat, bw, chunk_size, chunk_per_collective):
     command = f"./run_dse.sh {TACOS_SRC} {OUTPUT_PATH} {K} {link_lat} {bw} {chunk_size} {chunk_per_collective} {new_yaml_file_name}"
     subprocess.run(command, shell=True, check=True)
 
-# # Parameters for the product
-# K = [12] # to be changed for different team members
+# Parameters for the product
+K = [12] # to be changed for different team members
 
-# link_latency = list(range(100, 1000, 100))  # ns
-# bandwidths = list(range(50, 600, 50))  # GB/s
-# chunk_size = list(range(1, 4000, 500))  # MB
-# chunks_per_collective = [1]
+link_latency = list(range(100, 1000, 100))  # ns
+bandwidths = list(range(50, 600, 50))  # GB/s
+chunk_size = list(range(1, 4000, 500))  # MB
+chunks_per_collective = [1]
 
-# param_combinations = list(product(K, link_latency, bandwidths, chunk_size, chunks_per_collective))
+param_combinations = list(product(K, link_latency, bandwidths, chunk_size, chunks_per_collective))
 
-# # Running the tasks in parallel
-# def main():
-#     # Determine the number of cores to use
-#     total_cores = os.cpu_count()
-#     number_of_workers = max(8, 12)  # Use all but one core
+# Running the tasks in parallel
+def main():
+    # Determine the number of cores to use
+    total_cores = os.cpu_count()
+    number_of_workers = max(8, 12)  # Use all but one core
 
-#     # Using ProcessPoolExecutor with a specific number of workers
-#     with concurrent.futures.ProcessPoolExecutor(max_workers=number_of_workers) as executor:
-#         # Submit all tasks to the executor
-#         futures = [executor.submit(run_analysis, *params) for params in param_combinations]
+    # Using ProcessPoolExecutor with a specific number of workers
+    with concurrent.futures.ProcessPoolExecutor(max_workers=number_of_workers) as executor:
+        # Submit all tasks to the executor
+        futures = [executor.submit(run_analysis, *params) for params in param_combinations]
 
-#         # Wait for all tasks to complete
-#         for future in concurrent.futures.as_completed(futures):
-#             try:
-#                 future.result()  # Get the result of the task
-#             except Exception as exc:
-#                 print(f'Generated an exception: {exc}')
+        # Wait for all tasks to complete
+        for future in concurrent.futures.as_completed(futures):
+            try:
+                future.result()  # Get the result of the task
+            except Exception as exc:
+                print(f'Generated an exception: {exc}')
 
-# if __name__ == '__main__':
-#     main()
+if __name__ == '__main__':
+    main()
 
-run_analysis(8, 600, 100, 1024, 1)
+# run_analysis(8, 600, 100, 1024, 1)
