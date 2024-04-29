@@ -60,7 +60,7 @@ BINARY=/home/davendra/project/astra-sim/build/astra_analytical/build/bin/AstraSi
 
 SCRIPT_DIR=../../
 
-WORKLOAD=./chakra_et/"$OUTPUT_ET_FILENAME"
+WORKLOAD=$OUTPUT_ET_FILENAME
 
 # WORKLOAD="${SCRIPT_DIR:?}"/inputs/workload/test/one_comm_coll_node_allgather
 SYSTEM="${SCRIPT_DIR:?}"inputs/system/Ring.json
