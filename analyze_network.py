@@ -232,7 +232,7 @@ def main():
             print("Directory '%s' can not be created" % GRAPH_DATA_DIR)
 
     for t, graph in graphs.items():
-        print(t)
+        print(f'Graph No: {t}')
         name = f'graph_{t}'
         visualize_graph(graph, GRAPH_DATA_DIR, name=name, t=t)
 
