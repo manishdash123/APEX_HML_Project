@@ -58,12 +58,15 @@ def run_analysis(K, link_lat, bw, chunk_size, chunk_per_collective):
     subprocess.run(command, shell=True, check=True)
 
 # Parameters for the product
-K = [20] # to be changed for different team members
 
-link_latency = list(range(100, 1000, 100))  # ns
-bandwidths = list(range(50, 600, 50))  # GB/s
-chunk_size = list(range(1, 4000, 500))  # MB
-chunks_per_collective = [1]
+K = [10] # to be changed for different team members
+link_latency = [500]
+bandwidths = list(range(0, 1100, 100))  # GB/s
+chunk_size = list(range(0, 10500, 500))  # MB
+chunks_per_collective = [1, 2, 3, 4]
+
+bandwidths[0] = 1
+chunk_size[0] = 1
 
 param_combinations = list(product(K, link_latency, bandwidths, chunk_size, chunks_per_collective))
 
@@ -89,6 +92,6 @@ if __name__ == '__main__':
     main()
     print('DONE SIMULATION!')
 
-# run_analysis(8, 600, 100, 1024, 1)
+# run_analysis(3, 500, 50, 1024, 1)
 
 # print(f'Length of combinations: {len(param_combinations)}')
