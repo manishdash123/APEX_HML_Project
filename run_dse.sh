@@ -71,6 +71,8 @@ SYSTEM="${SCRIPT_DIR:?}"inputs/system/Ring.json
 
 NETWORK=$YAML_FILE
 
+# NETWORK=/home/davendra/project/APEX_HML_Project/inputs/network/Mesh2D.yml
+
 MEMORY="${SCRIPT_DIR:?}"inputs/remote_memory/no_memory_expansion.json
 
 "${BINARY}" \
@@ -82,3 +84,4 @@ MEMORY="${SCRIPT_DIR:?}"inputs/remote_memory/no_memory_expansion.json
 
 # <----------------------------------------------------------  delete ET files ------------------------------------------------------>
 rm -rf *et
+rm -rf ./$TACOS_FILENAME

@@ -335,9 +335,10 @@ def main():
     with open(filename, "w") as file:
         file.write(modified_xml_content)
 
-    with open('node_traffic_after.log', 'w') as f:
-        # Use pprint and direct the output to the file
-        pprint.pprint(node_traffic, stream=f)
+    if debug:
+        with open('node_traffic_after.log', 'w') as f:
+            # Use pprint and direct the output to the file
+            pprint.pprint(node_traffic, stream=f)
 
 
 if __name__ == "__main__":
