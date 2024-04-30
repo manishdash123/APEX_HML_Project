@@ -1,7 +1,7 @@
 # APEX_HML_Project
 TACOS-ASTRASIM HML project
 
-**Guidelines to run the code:**
+**Guidelines to run the entire automation code:**
 
 1) Specify the configurations in dse.py.
 2) Run python3 dse.py.
