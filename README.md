@@ -4,9 +4,12 @@ TACOS-ASTRASIM HML project
 **Guidelines to run the entire automation code:**
 
 1) Clone the code from node_traffic branch (as that has been updated most recently).
-2) Specify the configurations in dse.py.
-3) Run python3 dse.py.
-4) Results will get populated in separate folders (for each configuration) in ./apex_outputs folder
+2) In run_dse.sh, update the path of the Chakra ET converter where "PYTHONPATH" is assigned.  
+3) In run_dse.sh, update the path for "BINARY" (which would be the path for the binary for ASTRAsim's analytical build).
+4) In dse.py, update TACOS_SRC path as the path for the the binary file for TACOS (refer the "Guidelines to generate binary file for TACOS" on steps to generate the file).  
+5) Specify the configurations for the network, dimension (K), link_latency (in GB/s), chunk_size (in MB) and the number of chunks per collective (chunks_per_collective) in dse.py. Please note, K is the number of GPUs in one side of a square 2D mesh, so the total number of GPUs in the network would be K<sup>2</sup>. 
+6) Run python3 dse.py.
+7) Results will get populated in separate folders (for each configuration) in ./apex_outputs folder
 
 
 **Guidelines to generate binary file for TACOS**:
