@@ -6,19 +6,19 @@ Guidelines from the mail shared by William:
 Attached is the TACOS project source code for your project. Prerequisite is CMake v3.22. 
 
 Please run it by:
-tar -xf tacos-project.tar.xz
+`tar -xf tacos-project.tar.xz`
 
-cd tacos
+`cd tacos`
 
-mkdir build
+`mkdir build`
 
-cd build
+`cd build`
 
-cmake ..
+`cmake ..`
 
-cmake --build . -j$(nproc)
+`cmake --build . -j$(nproc)`
 
-./bin/TACOS
+`./bin/TACOS`
 
 There are two code sections you might take a look into (as I mentioned, you can disregard other parts for the sake of the project). Those blocks are clearly marked by `FIXME:` directives.
 
