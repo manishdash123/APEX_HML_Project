@@ -1,7 +1,7 @@
 # APEX_HML_Project
 TACOS-ASTRASIM HML project
 
-**Guidelines to run the entire automation code:**
+**Guidelines to run the entire automation code and perform Design Space Exploration (DSE):**
 
 1) Clone the code from node_traffic branch (as that has been updated most recently).
 2) In run_dse.sh, update the path of the Chakra ET converter where "PYTHONPATH" is assigned.  
