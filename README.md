@@ -3,9 +3,10 @@ TACOS-ASTRASIM HML project
 
 **Guidelines to run the entire automation code:**
 
-1) Specify the configurations in dse.py.
-2) Run python3 dse.py.
-3) Results will get populated in separate folders (for each configuration) in ./apex_outputs folder
+1) Clone the code from node_traffic branch (as that has been updated most recently).
+2) Specify the configurations in dse.py.
+3) Run python3 dse.py.
+4) Results will get populated in separate folders (for each configuration) in ./apex_outputs folder
 
 
 **Guidelines to generate binary file for TACOS**:
