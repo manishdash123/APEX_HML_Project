@@ -4,11 +4,11 @@ This project has been done as part of the course project for the EC 8803/ CS 880
 Automate integration of the bridge between [TACOS](https://arxiv.org/abs/2304.05301) and [ASTRA-SIM](https://astra-sim.github.io/). Automation of the Design Space Exploration (DSE) has also been done as part of the project.
 
 Team Members
-Davendra Seunarine Maharaj - https://github.com/davendramaharaj1
-Gaurav Singh Chandrabhan - https://github.com/Gauravchandrabhan
-Karthikeya Sharma - https://github.com/KarthikeyaSharma16
-Manish Dash - https://github.com/manishdash123
-Mohammad Zain - https://github.com/MZain-electro
+[Davendra Seunarine Maharaj](https://github.com/davendramaharaj1)
+[Gaurav Singh Chandrabhan](https://github.com/Gauravchandrabhan)
+[Karthikeya Sharma](https://github.com/KarthikeyaSharma16)
+[Manish Dash](https://github.com/manishdash123)
+[Mohammad Zain](https://github.com/MZain-electro)
 
 **Guidelines to run the entire automation code and perform Design Space Exploration (DSE):**
 
