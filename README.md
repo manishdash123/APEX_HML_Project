@@ -38,7 +38,7 @@ Collective communication techniques have played a significant role in optimizing
     
 11) The results will get populated in separate folders (for each configuration) in `./apex_outputs` folder.
 
-**Guidelines to generate binary file for TACOS**:
+## **Guidelines to generate binary file for TACOS**:
 Attached is the TACOS project source code for your project. Prerequisite is CMake v3.22. 
 
 Set of commands to run TACOS is given below:
