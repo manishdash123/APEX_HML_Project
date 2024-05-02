@@ -18,15 +18,15 @@ Collective communication techniques have played a significant role in optimizing
 1) Clone the code from `node_traffic` branch (as that has been updated most recently).
 2) In `run_dse.sh`, update the path of the Chakra ET converter where "PYTHONPATH" is assigned.
 
-   `export PYTHONPATH="/home/davendra/project/chakra:$PYTHONPATH"` \rightarrow update this line.
+   `export PYTHONPATH="/home/davendra/project/chakra:$PYTHONPATH"` -> update this line.
    
 4) In `run_dse.sh`, update the path for "BINARY" (which would be the path for the binary for ASTRAsim's analytical build).
 
-   `BINARY=/home/davendra/project/astra-sim/build/astra_analytical/build/bin/AstraSim_Analytical_Congestion_Aware` \rightarrow update this line.
+   `BINARY=/home/davendra/project/astra-sim/build/astra_analytical/build/bin/AstraSim_Analytical_Congestion_Aware` -> update this line.
    
 6) In `dse.py`, update TACOS_SRC path as the path for the the binary file for TACOS (refer the "Guidelines to generate binary file for TACOS" on steps to generate the file).
 
-   `TACOS_SRC = '/home/davendra/project/APEX_HML_Project/build/bin/TACOS'` \rightarrow update this line.
+   `TACOS_SRC = '/home/davendra/project/APEX_HML_Project/build/bin/TACOS'` -> update this line.
    
 8) Specify the configurations for the network in `dse.py`:
    * Dimension (`K` Please note, **K** is the number of GPUs in one side of a square 2D mesh, so the total number of GPUs in the network would be K<sup>2</sup>)
