@@ -16,9 +16,7 @@ Collective communication techniques have played a significant role in optimizing
 ## **Guidelines to run the entire automation code and perform Design Space Exploration (DSE)**
 
 1) Clone the code from `node_traffic` branch (as that has been updated most recently).
-2) In `run_dse.sh`, update the path of the Chakra ET converter where "PYTHONPATH" is assigned.
-
-   `export PYTHONPATH="/home/davendra/project/chakra:$PYTHONPATH"` -> update this line.
+2) In `run_dse.sh`, update the path of the Chakra ET converter where "PYTHONPATH" is assigned in line number 11.
    
 4) In `run_dse.sh`, update the path for "BINARY" (which would be the path for the binary for ASTRAsim's analytical build).
 
