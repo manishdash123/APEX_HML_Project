@@ -31,13 +31,13 @@ Collective communication techniques have played a significant role in optimizing
 Attached is the TACOS project source code for your project. Prerequisite is CMake v3.22. 
 
 Set of commands to run TACOS is given below:
-`tar -xf tacos-project.tar.xz`
-`cd tacos`
-`mkdir build`
-`cd build`
-`cmake ..`
-`cmake --build . -j$(nproc)`
-`./bin/TACOS`
+* `tar -xf tacos-project.tar.xz`
+* `cd tacos`
+* `mkdir build`
+* `cd build`
+* `cmake ..`
+* `cmake --build . -j$(nproc)`
+* `./bin/TACOS`
 
 **The above set of commands has been automated by writing a separate bash script `run.sh`, and stores the output in `/build/bin/TACOS`**
 
