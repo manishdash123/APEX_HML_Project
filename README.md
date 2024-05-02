@@ -29,7 +29,7 @@ Collective communication techniques have played a significant role in optimizing
    `TACOS_SRC = '/home/davendra/project/APEX_HML_Project/build/bin/TACOS'` \rightarrow update this line.
    
 8) Specify the configurations for the network in `dse.py`:
-   * Dimension (`**K**` Please note, **K** is the number of GPUs in one side of a square 2D mesh, so the total number of GPUs in the network would be K<sup>2</sup>)
+   * Dimension (`K` Please note, **K** is the number of GPUs in one side of a square 2D mesh, so the total number of GPUs in the network would be K<sup>2</sup>)
    * Link latency (`link_latency`) (in GB/s)
    * Chunk Size `Chunk_size` (in MB)
    * Number of chunks per collective (`chunks_per_collective`)
