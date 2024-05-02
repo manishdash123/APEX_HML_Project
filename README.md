@@ -1,5 +1,4 @@
-# APEX_HML_Project
-TACOS-ASTRASIM HML project
+# ECE/CS 8803 : Automated Parser for EXpanded Networks
 
 Guidelines from the mail shared by William:
 
