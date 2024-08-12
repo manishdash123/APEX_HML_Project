@@ -5,6 +5,9 @@ LICENSE file in the root directory of this source tree.
 
 #include "AllGather.h"
 #include "Mesh2D.h"
+#include "Torus2D.h"
+#include "Hypercube3D.h"
+#include "Torus3D.h"
 #include "TacosGreedy.h"
 #include "Timer.h"
 #include <iostream>

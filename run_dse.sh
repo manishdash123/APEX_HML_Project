@@ -10,13 +10,14 @@ LINK=$4
 BW=$5
 CHUNK=$6
 CHUNK_PER_COLL=$7
-YAML_FILE=$8
+TOPOLOGY_DIMS = $8
+# YAML_FILE=$8
 
 # Go into DEST DIR
 cd $DEST_DIR
 
 #path to chakra folder
-export PYTHONPATH="/home/davendra/project/chakra:$PYTHONPATH"
+export PYTHONPATH="/home/karthike4/Desktop/APEX/chakra:$PYTHONPATH"
 
 # <---------------------------------------------------------- CALL 1: TACOS --------------------------------------------------------->
 # echo "<------------------------------------------------------Calling TACOS ---------------------------------------------------------->"
@@ -34,7 +35,7 @@ chmod +x "./$TACOS_FILENAME"
 
 # <---------------------------------------------------------- CALL 2: XML ---------------------------------------------------------->
 
-python3 ../../analyze_network.py --K $DIM --link_lat $LINK --bw $BW --chunk_size $CHUNK --chunk_per_collective $CHUNK_PER_COLL --debug 0
+python3 analyze_network.py --K $DIM --link_lat $LINK --bw $BW --chunk_size $CHUNK --chunk_per_collective $CHUNK_PER_COLL --debug 0 --topology_dimensions $TOPOLOGY_DIMS
 
 
 # <---------------------------------------------------------- CALL 3: CHAKRA -------------------------------------------------------->
@@ -47,7 +48,7 @@ OUTPUT_ET_FILENAME="gpu_${DIM}_link_${LINK}_bw_${BW}_chunk_${CHUNK}_chunk_coll_$
 # mkdir -p chakra_et
 
 # Call the et_converter.py with the dynamically constructed filenames
-python3 -m et_converter.et_converter \
+python3 -m chakra.et_converter.et_converter \
   --input_type msccl \
   --input_filename "$INPUT_XML_FILENAME" \
   --output_filename "$OUTPUT_ET_FILENAME" \
@@ -55,36 +56,36 @@ python3 -m et_converter.et_converter \
 
 # <---------------------------------------------------------- CALL 4: ASTRASIM ------------------------------------------------------>
 
-#path to ASTRA-SIM binary
-BINARY=/home/davendra/project/astra-sim/build/astra_analytical/build/bin/AstraSim_Analytical_Congestion_Aware
+# #path to ASTRA-SIM binary
+# BINARY=/home/davendra/project/astra-sim/build/astra_analytical/build/bin/AstraSim_Analytical_Congestion_Aware
 
-SCRIPT_DIR=../../
+# SCRIPT_DIR=../../
 
-WORKLOAD=$OUTPUT_ET_FILENAME
-# echo $WORKLOAD
+# WORKLOAD=$OUTPUT_ET_FILENAME
+# # echo $WORKLOAD
 
-#WORKLOAD=./inputs/workload/test/one_comm_coll_node_allgather
+# #WORKLOAD=./inputs/workload/test/one_comm_coll_node_allgather
 
-SYSTEM="${SCRIPT_DIR:?}"inputs/system/Ring.json
-# echo $SYSTEM
+# SYSTEM="${SCRIPT_DIR:?}"inputs/system/Ring.json
+# # echo $SYSTEM
 
-#to do : update the yml file before running
-# NETWORK="${SCRIPT_DIR:?}"inputs/network/Mesh2D.yml
+# #to do : update the yml file before running
+# # NETWORK="${SCRIPT_DIR:?}"inputs/network/Mesh2D.yml
 
-NETWORK=$YAML_FILE
-# echo $NETWORK
+# NETWORK=$YAML_FILE
+# # echo $NETWORK
 
-# NETWORK=/home/davendra/project/APEX_HML_Project/inputs/network/Mesh2D.yml
+# # NETWORK=/home/davendra/project/APEX_HML_Project/inputs/network/Mesh2D.yml
 
-MEMORY="${SCRIPT_DIR:?}"inputs/remote_memory/no_memory_expansion.json
+# MEMORY="${SCRIPT_DIR:?}"inputs/remote_memory/no_memory_expansion.json
 
-# echo $MEMORY
+# # echo $MEMORY
 
-"${BINARY}" \
-  --workload-configuration="${WORKLOAD}" \
-  --system-configuration="${SYSTEM}" \
-  --network-configuration="${NETWORK}"\
-  --remote-memory-configuration="${MEMORY}" > "${OUTPUT_ET_FILENAME}_astrasim.txt"
+# "${BINARY}" \
+#   --workload-configuration="${WORKLOAD}" \
+#   --system-configuration="${SYSTEM}" \
+#   --network-configuration="${NETWORK}"\
+#   --remote-memory-configuration="${MEMORY}" > "${OUTPUT_ET_FILENAME}_astrasim.txt"
 
 
 # <----------------------------------------------------------  delete ET files ------------------------------------------------------>
