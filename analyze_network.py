@@ -13,6 +13,7 @@ import pprint
 import matplotlib.image as mpimg
 from networkx.drawing.nx_agraph import to_agraph
 import time
+from collections import defaultdict
 
 #Function for parsing the python command.
 def setup_parser():
@@ -28,23 +29,14 @@ def setup_parser():
 
 #Preprocess CSV using Pandas library. (Just modified the timestep values)
 def preprocess_csv(input_file, output_file):
-    
-    # x = time.time()
-    
     df = pd.read_csv(input_file, header=None)
     unique_timesteps = df.iloc[:,0].unique()
     timestep_mapping = {original: new for new, original in enumerate(unique_timesteps)}
     df.iloc[:,0] = df.iloc[:,0].map(timestep_mapping)
     df.to_csv(output_file, index=False, header=False)
-    
-    # y = time.time()
-    
-    # print(f"Preprocess CSV function time taken : {y - x} seconds")
   
 #Using a single time step, create the data structure.      
 def create_data_structure(node_traffic, first_graph, graphs, debug):
-    
-    # x = time.time()
     
     for node in first_graph.nodes():
         
@@ -94,10 +86,6 @@ def create_data_structure(node_traffic, first_graph, graphs, debug):
                 step['timestep'] = step_counter
                 step_counter += 1
                 
-    # y = time.time()
-    
-    print(f"Create data structure function time taken : {y - x} seconds")
-                
 # Function to generate and save XML in a pretty format
 def generate_and_save_xml_pretty(node_traffic, filename, chunks_per_collective, num_npus, num_timesteps):
     # count = 0
@@ -123,27 +111,13 @@ def generate_and_save_xml_pretty(node_traffic, filename, chunks_per_collective, 
                                     send=str(destination if edge_info['records'][0]['type'] == 's' else '-1'),
                                     recv=str(source if edge_info['records'][0]['type'] == 'r' else '-1'),
                                     chan="0")
-            
-            # src = [df[source][(source, destination)]['records'][timestep]['type'] == 's' for timestep in range(num_timesteps)]
-            # dst = [df[destination][(source, destination)]['records'][timestep]['type'] == 'r' for timestep in range(num_timesteps)]
-            
+    
             # create <step> tags for each time step
             for record in edge_info['records']:
                 # print(record['timestep'])
                 
                 if record['type'] == '-1':
                     continue
-                
-                # chunkID = df[node][(source, destination)]['records'][record['timestep']]['chunkID']
-                # ax = any(df[node][(source, destination)]['records'][timestep]['chunkID'] == chunkID for timestep in range(num_timesteps))
-                # print("ChunkID \n" , chunkID)
-                # print()
-                # print("src \n", ax and src)
-                # print()
-                # print("dst \n", ax and dst)
-                # print()
-                
-                # xt = time.time()
                 
                 # Check for matching chunkID between 's' and 'r' records
                 # Check other thread blocks   
@@ -155,12 +129,6 @@ def generate_and_save_xml_pretty(node_traffic, filename, chunks_per_collective, 
                                 record['hasdep'] = 1
                                 record['depid'] = edge_info_other["threadID"]
                                 record['deps'] = record_other['timestep']
-         
-                yt = time.time()
-                
-                # print(f"Time taken for checking dependencies for node {node}, {edge_info['threadID']} is {yt - xt} seconds")
-                # diff = yt - xt
-                # count += diff
                 
                 # if record['type'] != '-1':
                 ET.SubElement(tb_elem, "step", 
@@ -175,7 +143,6 @@ def generate_and_save_xml_pretty(node_traffic, filename, chunks_per_collective, 
                               deps=str(record['deps']), #deps = dependent time step
                               hasdep=str(record['hasdep'])) #hasdep = Has dependency?
     
-    # print(f"Total time : {count} seconds")
     # Convert to string using ElementTree and parse with minidom for pretty printing
     rough_string = ET.tostring(root, 'utf-8')
     reparsed = xml.dom.minidom.parseString(rough_string)
@@ -184,10 +151,6 @@ def generate_and_save_xml_pretty(node_traffic, filename, chunks_per_collective, 
     # Write to file
     with open(filename, 'w') as file:
         file.write(pretty_xml_as_string)
-        
-    # y = time.time()
-    
-    # print(f"Generate XML function time taken : {y - x} seconds")
                 
 def main():
 
