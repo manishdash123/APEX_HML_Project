@@ -22,10 +22,6 @@ int main(int argc, char *argv[]) {
     int _linkBandwidth = atoi(argv[3]);  // GB/s
     int _allGatherSize = atoi(argv[4]);  // MB
     int _chunksCountPerAllGather = atoi(argv[5]);  // how many chunks per each All-Reduce collective
-
-    //std::cout<<"Enter <_width> <_linkLatency> <_linkBandwidth> <_allGatherSize> <_chunksCountPerAllGather> :";
-
-    //std::cin>>_width>>_linkLatency>>_linkBandwidth>>_allGatherSize>>_chunksCountPerAllGather;
     // FIXME: ====================================================================================
 
     const auto width = _width;  // 2D Mesh width
@@ -76,8 +72,13 @@ int main(int argc, char *argv[]) {
     std::cout << "[Synthesizing Collective Algorithm]" << std::endl;
 
     solverTimer.start();
+
+    /** Focus Points for Strealined Collective Generation  */
     auto solver = TacosGreedy(topology, collective);
     const auto collectiveTime = solver.solve();
+    /** Focus Points for Strealined Collective Generation  */
+
+
     solverTimer.stop();
     const auto synthesisTime = solverTimer.getTime("ms");
 
