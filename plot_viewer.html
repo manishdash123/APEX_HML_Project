@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Plot Viewer</title>
+    <style>
+        #plot-container {
+            width: 100%;
+            height: 700px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Interactive Plot Viewer</h1>
+    <div>
+        <button id="prevButton">Previous</button>
+        <button id="nextButton">Next</button>
+    </div>
+    <div id="plot-container">
+        <iframe id="plotFrame" width="100%" height="800" src="timestep_0.html"></iframe>
+    </div>
+
+    <script>
+        let currentTimestep = 0;
+        const maxTimestep = 7;  // Dynamically set max timestep
+
+        // Event listener for "Next" button
+        document.getElementById("nextButton").addEventListener("click", () => {
+            if (currentTimestep < maxTimestep) {
+                currentTimestep++;
+                updatePlot();
+            }
+        });
+
+        // Event listener for "Previous" button
+        document.getElementById("prevButton").addEventListener("click", () => {
+            if (currentTimestep > 0) {
+                currentTimestep--;
+                updatePlot();
+            }
+        });
+
+        // Function to update the iframe source
+        function updatePlot() {
+            const plotFrame = document.getElementById("plotFrame");
+            plotFrame.src = `timestep_${currentTimestep}.html`;
+        }
+    </script>
+</body>
+</html>

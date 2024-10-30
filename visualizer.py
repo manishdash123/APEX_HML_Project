@@ -5,6 +5,7 @@ import numpy as np
 import ipywidgets as widgets
 from IPython.display import display, clear_output
 import plotly.io as pio
+import re
 
 xml_file = 'gpu_3_link_500_bw_50_chunk_1024_chunk_coll_2.xml'
 
@@ -114,12 +115,25 @@ class create_topology:
         return G
 
 class visualizer:    
-    def __init__(self, timestep : int, topology : str):
+    def __init__(self, topology : str):
         self.topology = topology
         self.timestep_data = self.parse_xml()
-        self.current_timestep = timestep
+        self.current_timestep = 0
         self.max_timestep = len(self.timestep_data) - 1
-        self.create_buttons()
+
+        with open('plot_viewer.html') as file:
+            html_content = file.read()
+
+        updated_html_content = re.sub(
+            r'const maxTimestep\s*=\s*\d+;',  # Regex to match the line
+            f'const maxTimestep = {self.max_timestep - 1};',  # Replacement string
+            html_content
+        )
+
+        with open('plot_viewer.html', "w") as file:
+            file.write(updated_html_content)
+
+        self.update_plot()
 
     def parse_xml(self):
         tree = etree.parse(xml_file)
@@ -197,129 +211,109 @@ class visualizer:
 
     # Function to create scatter plot for nodes and edges per timestep
     def update_plot(self):
-        clear_output(wait=True)
-        display(self.prev_button, self.next_button)
-
-        #Create topology
-        topology = create_topology
-    
-        if (self.topology == "Mesh2D"):
-            G = topology.create_mesh2D()
-        elif (self.topology == "Torus2D"):
-            G = topology.create_torus2D()
-        elif (self.topology == "Hypercube3D"):
-            G = topology.create_hypercube()
-        elif (self.topology == "Torus3D"):
-            G = topology.create_torus3d()
-
-        length, width, depth = network_dim()
-        nodes = np.array(G.nodes())
-
-        time_data = self.timestep_data[f'{self.current_timestep}']
+        for i in range(self.max_timestep):
+            #Create topology
+            topology = create_topology
         
-        # Nodes scatter plot
-        scatter = go.Scatter3d(
-            x=nodes[:, 0], y=nodes[:, 1], z=nodes[:, 2],
-            mode='markers',
-            marker=dict(size=12, color='blue'),
-            hoverinfo='text',
-            hovertext=[f"gpu : {gpu_id}" for gpu_id in range(length * width * depth)]
-        )
+            if (self.topology == "Mesh2D"):
+                G = topology.create_mesh2D()
+            elif (self.topology == "Torus2D"):
+                G = topology.create_torus2D()
+            elif (self.topology == "Hypercube3D"):
+                G = topology.create_hypercube()
+            elif (self.topology == "Torus3D"):
+                G = topology.create_torus3d()
+
+            length, width, depth = network_dim()
+            nodes = np.array(G.nodes())
+
+            time_data = self.timestep_data[f'{self.current_timestep}']
         
-        # Edges and arrows
-        edges = []
-        for gpu_id, gpu_data in time_data.items():
-            for tb_id, tb_data in gpu_data.items():
-                if (tb_data['pkt_type'] == 's'):
-                    edges.append((int(gpu_id), int(tb_data['tb_gpuid_send']), int(tb_data['chunk_id'])))
-                elif (tb_data['pkt_type'] == 'r'):
-                    edges.append((int(tb_data['tb_gpuid_recv']), int(gpu_id), int(tb_data['chunk_id'])))
-        
-        arrows = []
-        x = []
-        edges = list(set(edges))
-
-        for edge in edges:
-            start_node = nodes[edge[0]]
-            end_node = nodes[edge[1]]
-            chunk_id = edge[2]
-
-            # Convert start_node and end_node to tuples for comparison
-            start_node_tuple = tuple(start_node)
-            end_node_tuple = tuple(end_node)
-            
-            """
-                for example if an edge is ((0,0,0), (0,0,1)), it doesn't exist in x, so append it to x, and draw a curved line and 
-                arrow from edge 0 to edge 1 with arrow pointing towards edge 1
-                
-                if ((0,0,1),(0,0,0)) appears, check if ((0,0,0),(0,0,1)) i.e., reverse of this exists in the list. If so remove this 
-                entry from the list and draw a curved line and arrow from edge 1 to edge 0, with arrow pointing towards edge 0
-            """
-
-            if (end_node_tuple, start_node_tuple) in x:
-                curve = self.create_curve(start_node, end_node, -0.05)
-                x.remove((end_node_tuple, start_node_tuple))
-            else:
-                x.append((start_node_tuple, end_node_tuple))
-                curve = self.create_curve(start_node, end_node, 0.05)
-
-            line = go.Scatter3d(
-                x=curve[:, 0], y=curve[:, 1], z=curve[:, 2],
-                mode='lines',
-                line=dict(color='black', width=2),
+            # Nodes scatter plot
+            scatter = go.Scatter3d(
+                x=nodes[:, 0], y=nodes[:, 1], z=nodes[:, 2],
+                mode='markers',
+                marker=dict(size=12, color='blue'),
                 hoverinfo='text',
-                hovertext=f"Chunk_id : {chunk_id}"
+                hovertext=[f"gpu : {gpu_id}" for gpu_id in range(length * width * depth)]
             )
             
-            arrows.append(line)
-            tangent = curve[-1] - curve[-7]
-
-            arrow = go.Cone(
-                x=[end_node[0]], y=[end_node[1]], z=[end_node[2]],
-                u=[tangent[0]], 
-                v=[tangent[1]], 
-                w=[tangent[2]],
-                sizemode="absolute",
-                sizeref=0.1,  # Adjust the size reference to control arrow size
-                anchor="tip",
-                showscale=False,
-                colorscale="Viridis"  # You can change the color as needed
-            )
-
-            arrows.append(arrow)
+            # Edges and arrows
+            edges = []
+            for gpu_id, gpu_data in time_data.items():
+                for tb_id, tb_data in gpu_data.items():
+                    if (tb_data['pkt_type'] == 's'):
+                        edges.append((int(gpu_id), int(tb_data['tb_gpuid_send']), int(tb_data['chunk_id'])))
+                    elif (tb_data['pkt_type'] == 'r'):
+                        edges.append((int(tb_data['tb_gpuid_recv']), int(gpu_id), int(tb_data['chunk_id'])))
             
-        # 3D Plot Layout
-        layout = go.Layout(
-            title=f"Time step = {self.current_timestep}",
-            scene=dict(
-                xaxis=dict(showgrid=True, showticklabels=False, title = ""),
-                yaxis=dict(showgrid=True, showticklabels=False, title = ""),
-                zaxis=dict(showgrid=True, showticklabels=False, title = "")
+            arrows = []
+            x = []
+            edges = list(set(edges))
+
+            for edge in edges:
+                start_node = nodes[edge[0]]
+                end_node = nodes[edge[1]]
+                chunk_id = edge[2]
+
+                # Convert start_node and end_node to tuples for comparison
+                start_node_tuple = tuple(start_node)
+                end_node_tuple = tuple(end_node)
+                
+                """
+                    for example if an edge is ((0,0,0), (0,0,1)), it doesn't exist in x, so append it to x, and draw a curved line and 
+                    arrow from edge 0 to edge 1 with arrow pointing towards edge 1
+                    
+                    if ((0,0,1),(0,0,0)) appears, check if ((0,0,0),(0,0,1)) i.e., reverse of this exists in the list. If so remove this 
+                    entry from the list and draw a curved line and arrow from edge 1 to edge 0, with arrow pointing towards edge 0
+                """
+
+                if (end_node_tuple, start_node_tuple) in x:
+                    curve = self.create_curve(start_node, end_node, -0.05)
+                    x.remove((end_node_tuple, start_node_tuple))
+                else:
+                    x.append((start_node_tuple, end_node_tuple))
+                    curve = self.create_curve(start_node, end_node, 0.05)
+
+                line = go.Scatter3d(
+                    x=curve[:, 0], y=curve[:, 1], z=curve[:, 2],
+                    mode='lines',
+                    line=dict(color='black', width=2),
+                    hoverinfo='text',
+                    hovertext=f"Chunk_id : {chunk_id}"
+                )
+                
+                arrows.append(line)
+                tangent = curve[-1] - curve[-7]
+
+                arrow = go.Cone(
+                    x=[end_node[0]], y=[end_node[1]], z=[end_node[2]],
+                    u=[tangent[0]], 
+                    v=[tangent[1]], 
+                    w=[tangent[2]],
+                    sizemode="absolute",
+                    sizeref=0.1,  # Adjust the size reference to control arrow size
+                    anchor="tip",
+                    showscale=False,
+                    colorscale="Viridis"  # You can change the color as needed
+                )
+
+                arrows.append(arrow)
+                
+            # 3D Plot Layout
+            layout = go.Layout(
+                title=f"Time step = {self.current_timestep}",
+                scene=dict(
+                    xaxis=dict(showgrid=True, showticklabels=False, title = ""),
+                    yaxis=dict(showgrid=True, showticklabels=False, title = ""),
+                    zaxis=dict(showgrid=True, showticklabels=False, title = "")
+                )
             )
-        )
 
-        fig = go.Figure(data=[scatter] + arrows, layout=layout)
-        pio.write_html(fig, f'timestep_{self.current_timestep}.html')
+            fig = go.Figure(data=[scatter] + arrows, layout=layout)
+            pio.write_html(fig, f'timestep_{self.current_timestep}.html')
 
-    def on_next_button_clicked(self, b):
-        if self.current_timestep < self.max_timestep:
             self.current_timestep += 1
-            v.update_plot(self.current_timestep)
-
-    def on_prev_button_clicked(self, b):
-        if self.current_timestep > 0:
-            self.current_timestep -= 1
-            v.update_plot(self.current_timestep)
-
-    def create_buttons(self):
-        # Create Next and Previous buttons
-        self.next_button = widgets.Button(description="Next")
-        self.prev_button = widgets.Button(description="Previous")
-
-    def bind_buttons(self):
-        self.next_button.on_click(self.on_next_button_clicked)
-        self.prev_button.on_click(self.on_prev_button_clicked)
 
 if __name__ == "__main__":
-    v = visualizer(7, "Mesh2D")
-    v.update_plot()
+    v = visualizer("Mesh2D")
