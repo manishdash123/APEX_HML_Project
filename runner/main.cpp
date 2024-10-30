@@ -5,6 +5,9 @@ LICENSE file in the root directory of this source tree.
 
 #include "AllGather.h"
 #include "Mesh2D.h"
+#include "Torus2D.h"
+#include "Torus3D.h"
+#include "Hypercube3D.h"
 #include "TacosGreedy.h"
 #include "Timer.h"
 #include <iostream>
@@ -43,6 +46,24 @@ int main(int argc, char *argv[]) {
 
     // construct topology
     const auto topology = std::make_shared<Mesh2D>(width, height, linkAlphaBeta);
+
+    if (std::dynamic_pointer_cast<Mesh2D>(topology))
+    {
+        std::cout << "Mesh2D Topology" << std::endl;
+    }
+    else if (std::dynamic_pointer_cast<Torus2D>(topology))
+    {
+        std::cout << "Torus2D Topology" << std::endl;
+    }
+    else if (std::dynamic_pointer_cast<Torus3D>(topology))
+    {
+        std::cout << "Torus3D Topology" << std::endl;
+    }
+    else if (std::dynamic_pointer_cast<Hypercube3D>(topology))
+    {
+        std::cout << "Hypercube3D Topology" << std::endl;
+    }
+
     const auto npusCount = topology->getNpusCount();
 
     // calculate chunk size

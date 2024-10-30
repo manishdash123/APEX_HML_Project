@@ -153,20 +153,17 @@ class visualizer:
     def create_curve(self, start, end, height_factor=0.2):
         """Create a curved path between two points."""
         curve = None
+        mid = (start + end) / 2
+        t = np.linspace(0, 1, 50)
 
         if (self.topology == "Mesh2D"):
-            mid = (start + end) / 2
-            # Add some height to the midpoint
             if (start[1] == end[1]):
                 mid[1] += np.linalg.norm(end - start) * height_factor
             else:
                 mid[0] += np.linalg.norm(end - start) * height_factor
-            t = np.linspace(0, 1, 50)
             curve = np.outer(1-t, start) + np.outer(t, end) + np.outer(4*t*(1-t), mid-0.5*(start+end))
 
         elif (self.topology == "Torus2D"):
-            mid = (start + end) / 2
-            # Add some height to the midpoint
             if (start[1] == end[1]):
                 if (abs(start[0] - end[0]) > 1):
                     mid[2] += np.linalg.norm(end - start) * height_factor
@@ -177,22 +174,16 @@ class visualizer:
                     mid[2] += np.linalg.norm(end - start) * height_factor
                 else:    
                     mid[0] += np.linalg.norm(end - start) * height_factor
-            t = np.linspace(0, 1, 50)
             curve = np.outer(1-t, start) + np.outer(t, end) + np.outer(4*t*(1-t), mid-0.5*(start+end))
 
         elif (self.topology == "Hypercube3D"):
-            mid = (start + end) / 2
-            # Add some height to the midpoint
             if (start[2] == end[2]):
                 mid[2] += np.linalg.norm(end - start) * height_factor
             else:
                 mid[0] += np.linalg.norm(end - start) * height_factor
-            t = np.linspace(0, 1, 50)
             curve = np.outer(1-t, start) + np.outer(t, end) + np.outer(4*t*(1-t), mid-0.5*(start+end))
         
         elif (self.topology == "Torus3D"):
-            mid = (start + end) / 2      
-            # Add some height to the midpoint
             if (start[2] == end[2]):
                 if (start[1] == end[1]):
                     mid[2] += np.linalg.norm(end - start) * height_factor * abs(end[0] - start[0])
@@ -200,7 +191,6 @@ class visualizer:
                     mid[2] += np.linalg.norm(end - start) * height_factor
             else:
                 mid[0] += np.linalg.norm(end - start) * height_factor * abs(end[2] - start[2])
-            t = np.linspace(0, 1, 50)
             curve = np.outer(1-t, start) + np.outer(t, end) + np.outer(4*t*(1-t), mid-0.5*(start+end))
         
         return curve
@@ -331,5 +321,5 @@ class visualizer:
         self.prev_button.on_click(self.on_prev_button_clicked)
 
 if __name__ == "__main__":
-    v = visualizer(0, "Mesh2D")
+    v = visualizer(7, "Mesh2D")
     v.update_plot()

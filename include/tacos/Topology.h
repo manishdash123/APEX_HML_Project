@@ -25,6 +25,8 @@ namespace Tacos {
 
         [[nodiscard]] double getBW(NpuId src, NpuId dest);
 
+        virtual ~Topology() {}
+
     protected:
         int npusCount;
 
