@@ -6,8 +6,19 @@
     <title>Interactive Plot Viewer</title>
     <style>
         #plot-container {
+            display: flex;
+            justify-content: space-between;
             width: 100%;
-            height: 700px;
+            height: 800px;
+        }
+        iframe {
+            height: 100%;
+        }
+        #plotFrame1 {
+            width: 40%; /* Set a specific width for the left iframe */
+        }
+        #plotFrame2 {
+            width: 60%; /* Adjust the right iframe to take up the remaining space */
         }
     </style>
 </head>
@@ -18,12 +29,13 @@
         <button id="nextButton">Next</button>
     </div>
     <div id="plot-container">
-        <iframe id="plotFrame" width="100%" height="800" src="timestep_0.html"></iframe>
+        <iframe id="plotFrame1" width="100%" height="700" src="timestep_0.html"></iframe>
+        <iframe id="plotFrame2" width="100%" height="700" src="TENS_plots/timestep_0.png"></iframe> <!-- Adjusted for second set -->
     </div>
 
     <script>
         let currentTimestep = 0;
-        const maxTimestep = 7;  // Dynamically set max timestep
+        const maxTimestep = 5;  // Dynamically set max timestep
 
         // Event listener for "Next" button
         document.getElementById("nextButton").addEventListener("click", () => {
@@ -41,10 +53,12 @@
             }
         });
 
-        // Function to update the iframe source
+        // Function to update the iframe sources
         function updatePlot() {
-            const plotFrame = document.getElementById("plotFrame");
-            plotFrame.src = `timestep_${currentTimestep}.html`;
+            const plotFrame1 = document.getElementById("plotFrame1");
+            const plotFrame2 = document.getElementById("plotFrame2");
+            plotFrame1.src = `timestep_${currentTimestep}.html`; // First set of files
+            plotFrame2.src = `TENS_plots/timestep_${currentTimestep}.png`; // Second set of files (change path as necessary)
         }
     </script>
 </body>

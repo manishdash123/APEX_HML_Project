@@ -7,7 +7,7 @@ from IPython.display import display, clear_output
 import plotly.io as pio
 import re
 
-xml_file = 'gpu_3_link_500_bw_50_chunk_1024_chunk_coll_2.xml'
+xml_file = 'gpu_2_link_500_bw_50_chunk_1024_chunk_coll_2.xml'
 
 def network_dim():
     dim = xml_file[4]
@@ -120,13 +120,14 @@ class visualizer:
         self.timestep_data = self.parse_xml()
         self.current_timestep = 0
         self.max_timestep = len(self.timestep_data) - 1
+        print(self.max_timestep)
 
         with open('plot_viewer.html') as file:
             html_content = file.read()
 
         updated_html_content = re.sub(
             r'const maxTimestep\s*=\s*\d+;',  # Regex to match the line
-            f'const maxTimestep = {self.max_timestep - 1};',  # Replacement string
+            f'const maxTimestep = {self.max_timestep};',  # Replacement string
             html_content
         )
 
@@ -211,7 +212,7 @@ class visualizer:
 
     # Function to create scatter plot for nodes and edges per timestep
     def update_plot(self):
-        for i in range(self.max_timestep):
+        for i in range(self.max_timestep + 1):
             #Create topology
             topology = create_topology
         
@@ -252,6 +253,7 @@ class visualizer:
             edges = list(set(edges))
 
             for edge in edges:
+                print(edge)
                 start_node = nodes[edge[0]]
                 end_node = nodes[edge[1]]
                 chunk_id = edge[2]
@@ -307,7 +309,8 @@ class visualizer:
                     xaxis=dict(showgrid=True, showticklabels=False, title = ""),
                     yaxis=dict(showgrid=True, showticklabels=False, title = ""),
                     zaxis=dict(showgrid=True, showticklabels=False, title = "")
-                )
+                ),
+                showlegend=False
             )
 
             fig = go.Figure(data=[scatter] + arrows, layout=layout)
@@ -316,4 +319,4 @@ class visualizer:
             self.current_timestep += 1
 
 if __name__ == "__main__":
-    v = visualizer("Mesh2D")
+    v = visualizer("Torus3D")
