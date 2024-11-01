@@ -13,6 +13,7 @@ import os
 import pprint
 import matplotlib.image as mpimg
 from networkx.drawing.nx_agraph import to_agraph
+import shutil
 
 def clean_directory(directory):
     # This function removes all files and folders in the specified directory
