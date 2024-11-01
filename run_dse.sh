@@ -4,7 +4,7 @@
 
 SRC_TACOS="/home/karthike4/Desktop/apex/APEX_HML_Project/build/bin/TACOS"
 DEST_DIR="/home/karthike4/Desktop/apex/APEX_HML_Project"
-DIM=3
+DIM=2
 LINK=500
 BW=50
 CHUNK=1024

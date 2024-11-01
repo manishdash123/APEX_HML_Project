@@ -7,20 +7,18 @@ from IPython.display import display, clear_output
 import plotly.io as pio
 import re
 
-xml_file = 'gpu_2_link_500_bw_50_chunk_1024_chunk_coll_2.xml'
-
-def network_dim():
+def network_dim(xml_file : str):
     dim = xml_file[4]
     length, width, depth = int(dim), int(dim), int(dim)
     return length, width, depth
 
 class create_topology:
-    def __init__():
-        pass
+    def __init__(self, xml_file : str):
+        self.xml_file = xml_file
 
-    def create_hypercube():
+    def create_hypercube(self):
         G = nx.DiGraph()
-        length, width, depth = network_dim()
+        length, width, depth = network_dim(self.xml_file)
         node_number = 0
         for k in range(depth):  
             for i in range(length):  
@@ -45,9 +43,9 @@ class create_topology:
                         G.add_edge((i, j, k + 1), new_node)  
         return G
 
-    def create_torus3d():
+    def create_torus3d(self):
         G = nx.DiGraph()
-        length, width, depth = network_dim()
+        length, width, depth = network_dim(self.xml_file)
         node_number = 0
         for k in range(depth):  
             for i in range(length):  
@@ -72,9 +70,9 @@ class create_topology:
                     G.add_edge((i, j, next_k), new_node)  
         return G
 
-    def create_mesh2D():
+    def create_mesh2D(self):
         G = nx.DiGraph()
-        length, width, depth = network_dim()
+        length, width, depth = network_dim(self.xml_file)
         node_number = 0
         for i in range(length):  
             for j in range(width):  
@@ -93,9 +91,9 @@ class create_topology:
 
         return G
 
-    def create_torus2D():
+    def create_torus2D(self):
         G = nx.DiGraph()
-        length, width, depth = network_dim()
+        length, width, depth = network_dim(self.xml_file)
         node_number = 0
         for i in range(length):  
             for j in range(width):  
@@ -115,12 +113,12 @@ class create_topology:
         return G
 
 class visualizer:    
-    def __init__(self, topology : str):
+    def __init__(self, topology : str, xml_file : str):
         self.topology = topology
+        self.xml_file = xml_file
         self.timestep_data = self.parse_xml()
         self.current_timestep = 0
         self.max_timestep = len(self.timestep_data) - 1
-        print(self.max_timestep)
 
         with open('plot_viewer.html') as file:
             html_content = file.read()
@@ -137,7 +135,7 @@ class visualizer:
         self.update_plot()
 
     def parse_xml(self):
-        tree = etree.parse(xml_file)
+        tree = etree.parse(self.xml_file)
         root = tree.getroot()
         timestep_data = {}
 
@@ -214,7 +212,7 @@ class visualizer:
     def update_plot(self):
         for i in range(self.max_timestep + 1):
             #Create topology
-            topology = create_topology
+            topology = create_topology(self.xml_file)
         
             if (self.topology == "Mesh2D"):
                 G = topology.create_mesh2D()
@@ -225,7 +223,7 @@ class visualizer:
             elif (self.topology == "Torus3D"):
                 G = topology.create_torus3d()
 
-            length, width, depth = network_dim()
+            length, width, depth = network_dim(self.xml_file)
             nodes = np.array(G.nodes())
 
             time_data = self.timestep_data[f'{self.current_timestep}']
@@ -253,7 +251,6 @@ class visualizer:
             edges = list(set(edges))
 
             for edge in edges:
-                print(edge)
                 start_node = nodes[edge[0]]
                 end_node = nodes[edge[1]]
                 chunk_id = edge[2]
@@ -317,6 +314,3 @@ class visualizer:
             pio.write_html(fig, f'timestep_{self.current_timestep}.html')
 
             self.current_timestep += 1
-
-if __name__ == "__main__":
-    v = visualizer("Torus3D")

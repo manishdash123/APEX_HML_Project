@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
     const auto linkAlphaBeta = std::make_pair(link_alpha_us, link_beta_us_per_MB);
 
     // construct topology
-    const auto topology = std::make_shared<Mesh2D>(width, height, linkAlphaBeta);
+    const auto topology = std::make_shared<Torus3D>(width, height, height, linkAlphaBeta);
 
     if (std::dynamic_pointer_cast<Mesh2D>(topology))
     {

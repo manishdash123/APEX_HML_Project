@@ -5,29 +5,18 @@ import csv
 import plotly.graph_objects as go
 import os
 
-# Load flow data from CSV file
-flow_data = []
-xmlfile = "gpu_2_link_500_bw_50_chunk_1024_chunk_coll_2.csv"
-
-with open(xmlfile, "r") as csvfile:
-    csvreader = csv.reader(csvfile)
-    for row in csvreader:
-        for i in range(len(row)):
-            row[i] = int(row[i])
-        flow_data.append(row)
-
-def network_dim():
+def network_dim(xmlfile : str):
     dim = xmlfile[4]
     length, width, depth = int(dim), int(dim), int(dim)
     return length, width, depth
 
 class create_topology:
-    def __init__():
-        pass
+    def __init__(self, xmlfile : str):
+        self.xmlfile = xmlfile
 
-    def create_hypercube():
+    def create_hypercube(self):
         G = nx.DiGraph()
-        length, width, depth = network_dim()
+        length, width, depth = network_dim(self.xmlfile)
         node_number = 0
         for k in range(depth):  
             for i in range(length):  
@@ -52,9 +41,9 @@ class create_topology:
                         G.add_edge((i, j, k + 1), new_node)  
         return G
 
-    def create_torus3d():
+    def create_torus3d(self):
         G = nx.DiGraph()
-        length, width, depth = network_dim()
+        length, width, depth = network_dim(self.xmlfile)
         node_number = 0
         for k in range(depth):  
             for i in range(length):  
@@ -79,9 +68,9 @@ class create_topology:
                     G.add_edge((i, j, next_k), new_node)  
         return G
 
-    def create_mesh2D():
+    def create_mesh2D(self):
         G = nx.DiGraph()
-        length, width, depth = network_dim()
+        length, width, depth = network_dim(self.xmlfile)
         node_number = 0
         for i in range(length):  
             for j in range(width):  
@@ -100,9 +89,9 @@ class create_topology:
 
         return G
 
-    def create_torus2D():
+    def create_torus2D(self):
         G = nx.DiGraph()
-        length, width, depth = network_dim()
+        length, width, depth = network_dim(self.xmlfile)
         node_number = 0
         for i in range(length):  
             for j in range(width):  
@@ -122,15 +111,17 @@ class create_topology:
         return G
     
 class TENVisualizer:
-    def __init__(self, topo : str):
-        self.topology_type = topology
+    def __init__(self, topo : str, xmlfile: str, flow_data : list):
+        self.topology_type = topo
+        self.xmlfile = xmlfile
+        self.flow_data = flow_data
 
         if topo == "Mesh2D" or topo == "Torus2D":
-            num_nodes = int(xmlfile[4]) * int(xmlfile[4])
+            num_nodes = int(self.xmlfile[4]) * int(self.xmlfile[4])
         elif topo == "Hypercube3D" or topo == "Torus3D":
-            num_nodes = int(xmlfile[4]) * int(xmlfile[4]) * int(xmlfile[4])
+            num_nodes = int(self.xmlfile[4]) * int(self.xmlfile[4]) * int(self.xmlfile[4])
 
-        self.G, self.time_steps = self.build_time_expanded_network(flow_data, num_nodes)
+        self.G, self.time_steps = self.build_time_expanded_network(self.flow_data, num_nodes)
         self.num_nodes = num_nodes
         self.current_time_step = 0
         
@@ -145,7 +136,7 @@ class TENVisualizer:
         time_steps = sorted(set(t for t, _, _, _ in flow_data))
         G = nx.DiGraph()
 
-        topology = create_topology
+        topology = create_topology(self.xmlfile)
 
         if self.topology_type == "Mesh2D":
             G_ = topology.create_mesh2D()
@@ -248,7 +239,3 @@ class TENVisualizer:
             fig.savefig(f'{output_path}')
             
             self.current_time_step += 1
-
-# Example usage
-topology = "Torus3D"
-visualizer = TENVisualizer(topology)

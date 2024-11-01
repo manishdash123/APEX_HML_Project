@@ -193,7 +193,7 @@ def main():
     chunks_per_collective = args.chunk_per_collective
     debug = args.debug
 
-    num_npus = int(mesh_dim * mesh_dim)
+    num_npus = int(mesh_dim * mesh_dim * mesh_dim)
     npu_ids = range(num_npus)
 
     if debug:
