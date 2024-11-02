@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# <---------------------------------------------- TACOS BUILD --------------------------------------------------------------------->
 # Check if /build/bin exists
 if [ ! -d "/build/bin" ]; then
     echo "build/bin does not exist!"
@@ -16,5 +17,3 @@ cd ./build/bin
 
 # Run the TACOS executable
 ./TACOS 2 500 50 1024 2 > ./../../output.txt
-
-echo "TACOS saved to TACOS_output"

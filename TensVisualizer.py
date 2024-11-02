@@ -126,7 +126,7 @@ class TENVisualizer:
         self.current_time_step = 0
         
         # Create output directory for HTML files
-        self.output_dir = "TENS_plots"
+        self.output_dir = "Plots"
         os.makedirs(self.output_dir, exist_ok=True)
 
         # Draw the initial step

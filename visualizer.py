@@ -311,6 +311,6 @@ class visualizer:
             )
 
             fig = go.Figure(data=[scatter] + arrows, layout=layout)
-            pio.write_html(fig, f'timestep_{self.current_timestep}.html')
+            pio.write_html(fig, f'Plots/timestep_{self.current_timestep}.html')
 
             self.current_timestep += 1

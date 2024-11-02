@@ -6,8 +6,8 @@ topology = "Torus3D"
 
 # Load flow data from CSV file
 flow_data = []
-csv_file = "gpu_2_link_500_bw_50_chunk_1024_chunk_coll_2.csv"
-xml_file =  "gpu_2_link_500_bw_50_chunk_1024_chunk_coll_2.xml"
+csv_file = "gpu_2_link_500_bw_50_chunk_1024_chunk_coll_2_dimensions_3.csv"
+xml_file =  "gpu_2_link_500_bw_50_chunk_1024_chunk_coll_2_dimensions_3.xml"
 
 with open(csv_file, "r") as csvfile:
     csvreader = csv.reader(csvfile)
